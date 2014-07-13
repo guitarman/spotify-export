@@ -26,6 +26,10 @@ class SpotifyTrack
     attributes[:duration]
   end
 
+  def m3u_record
+    "#EXTINF:#{duration}, #{artist} - #{name}\n#{uri}\n"
+  end
+
   private
 
   def attributes
