@@ -22,6 +22,10 @@ class SpotifyTrack
     attributes[:name]
   end
 
+  def duration
+    attributes[:duration]
+  end
+
   private
 
   def attributes
@@ -31,7 +35,7 @@ class SpotifyTrack
       if cache.blank?
         get_track_attributes
       else
-        { name: cache[:name], artist: cache[:artist], album: cache[:album] } 
+        { name: cache[:name], artist: cache[:artist], album: cache[:album] }
       end
     end
   end
@@ -74,7 +78,7 @@ class SpotifyTrack
         sleep 5
         retry
       end
-
+      
       name   =  json["track"]["name"]
       artist =  format_artists( json["track"]["artists"] )
       album  =  json["track"]["album"]["name"]
@@ -82,7 +86,7 @@ class SpotifyTrack
       cache_track(name, artist, album) if response.code == "200"
     end
 
-    { name: name, artist: artist, album: album } 
+    { name: name, artist: artist, album: album }
   end
 
 end
