@@ -35,16 +35,17 @@ class SpotifyTrack
       if cache.blank?
         get_track_attributes
       else
-        { name: cache[:name], artist: cache[:artist], album: cache[:album] }
+        { name: cache[:name], artist: cache[:artist], album: cache[:album], duration: cache[:duration] }
       end
     end
   end
 
-  def cache_track(cache_name, cache_artist, cache_album)
+  def cache_track(cache_name, cache_artist, cache_album, cache_duration)
     SpotifyCache.create(uri: uri,
                         name: cache_name,
                         artist: cache_artist,
-                        album: cache_album)
+                        album: cache_album,
+                        duration: cache_duration)
   end
 
   def format_artists(artists)
@@ -65,6 +66,7 @@ class SpotifyTrack
       name   = URI.decode(uriArr[4].gsub('+', ' '))
       album  = URI.decode(uriArr[3].gsub('+', ' '))
       artist = URI.decode(uriArr[2].gsub('+', ' '))
+      duration = URI.decode(uriArr[5].gsub('+', ' '))
     else
       target  = URI.parse("http://ws.spotify.com/lookup/1/.json?uri=#{ uri }")
       http    = Net::HTTP.new(target.host, target.port)
@@ -78,15 +80,16 @@ class SpotifyTrack
         sleep 5
         retry
       end
-      
+
       name   =  json["track"]["name"]
       artist =  format_artists( json["track"]["artists"] )
       album  =  json["track"]["album"]["name"]
+      duration = json["track"]["length"].to_f.round
 
-      cache_track(name, artist, album) if response.code == "200"
+      cache_track(name, artist, album, duration) if response.code == "200"
     end
 
-    { name: name, artist: artist, album: album }
+    { name: name, artist: artist, album: album, duration: duration }
   end
 
 end
