@@ -30,6 +30,10 @@ class SpotifyTrack
     "#EXTINF:#{duration}, #{artist} - #{name}\n#{uri}\n"
   end
 
+  def plain_record
+    "#{ name } -- #{ artist } -- #{ album }\n"
+  end
+
   private
 
   def attributes

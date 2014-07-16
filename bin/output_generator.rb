@@ -44,6 +44,6 @@ end
 class PlainTextGenerator < OutputGenerator
 
   def generate_track_record(track)
-    "#{ track.name } -- #{ track.artist } -- #{ track.album }\n"
+    track.plain_record
   end
 end
