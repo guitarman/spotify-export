@@ -50,4 +50,9 @@ describe SpotifyTrack do
     end
   end
 
+  describe "#duration" do
+    it "should return track duration" do
+      track.duration.should == 210
+    end
+  end
 end
